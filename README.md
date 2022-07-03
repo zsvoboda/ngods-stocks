@@ -13,22 +13,22 @@ ngods stands for New Generation Opensource Data Stack. It includes the following
 
 ngods data pipeline is inspired by [Databrick’s medallion architecture](https://databricks.com/fr/glossary/medallion-architecture) that uses bronze, silver, and gold data stages. 
 
-ngods is open-sourced under a [BSD license](https://github.com/zsvoboda/ngods-uk/blob/main/LICENSE) and it is distributed as a docker-compose script that supports Intel and ARM architectures.
+ngods is open-sourced under a [BSD license](https://github.com/zsvoboda/ngods-stocks/blob/main/LICENSE) and it is distributed as a docker-compose script that supports Intel and ARM architectures.
 
 ## ngods installation and hardware requirements
 ngods requires a machine with at least 16GB RAM and Intel or Arm 64 CPU running [Docker](https://www.docker.com/). It requires `docker-compose` tool to be installed.
 
-1. Clone the [ngods repo](https://github.com/zsvoboda/ngods-uk)
+1. Clone the [ngods repo](https://github.com/zsvoboda/ngods-stocks)
 
 ```bash
-git clone https://github.com/zsvoboda/ngods-uk.git
-cd ngods-uk
+git clone https://github.com/zsvoboda/ngods-stocks.git
+cd ngods-stocks
 ```
 
 2. Select `docker-compose` script for your CPU architecture 
 
 ```bash
-cd ngods-uk
+cd ngods-stocks
 
 # use the docker-compose.x86.yml for Intel CPU 
 cp docker-compose.x86.yml docker-compose.yml
@@ -40,7 +40,7 @@ cp docker-compose.arm64.yml docker-compose.yml
 3. Start it using the `docker-compose up` command
 
 ```bash
-cd ngods-uk
+cd ngods-stocks
 
 docker-compose up -d
 ```
@@ -50,7 +50,7 @@ This can take quite long depending on your network speed.
 4. Stop it using the `docker-compose down` command
 
 ```bash
-cd ngods-uk
+cd ngods-stocks
 
 docker-compose down
 ```
