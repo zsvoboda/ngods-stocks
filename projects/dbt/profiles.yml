@@ -1,0 +1,31 @@
+spark:
+  target: dev
+  outputs:
+    dev:
+      type: spark
+      method: thrift
+      host: spark
+      port: 10000
+      schema: warehouse.bronze
+      user: dbt
+      password: dbt
+      auth: NOSASL
+      connect_retries: 5
+      connect_timeout: 60
+      retry_all: true
+
+trino:
+  target: dev
+  outputs:
+    dev:
+      type: trino
+      user: trino
+      host: trino
+      port: 8060
+      database: analytics
+      schema: gold
+      threads: 1
+      http_scheme: http
+      session_properties:
+        query_max_run_time: 5d
+        exchange_compression: True

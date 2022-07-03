@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: in_yahoo_finance
+    description: Downloaded Yahoo finance data
+
+    columns:
+      - name: dt
+        description: Time of ticker snapshot 
+        tests:
+          - not_null
+      - name: symbol
+        description: Ticker symbol
+        tests:
+          - not_null
+      - name: price_open
+        description: Ticker open price
+        tests:
+          - not_null      
+      - name: price_high
+        description: Ticker highest price
+        tests:
+          - not_null
+      - name: price_low
+        description: Ticker lowest price
+        tests:
+          - not_null
+      - name: price_close
+        description: Ticker close price
+        tests:
+          - not_null
+      - name: volume
+        description: Ticker volume
+        tests:
+          - not_null
+      - name: dividends
+        description: Ticker dividends
+        tests:
+          - not_null
+      - name: splits
+        description: Ticker splits
+        tests:
+          - not_null
+      

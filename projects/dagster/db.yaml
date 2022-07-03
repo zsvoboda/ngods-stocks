@@ -1,0 +1,7 @@
+resources:
+  trino:
+    config:
+      host: trino
+      port: '8060'
+      user: trino
+      password: ''

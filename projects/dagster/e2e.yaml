@@ -1,0 +1,47 @@
+resources:
+  dbt:
+    config:
+      project_dir: ../dbt/bronze
+      profiles_dir: ../dbt
+  trino:
+    config:
+      host: trino
+      port: '8060'
+      user: trino
+      password: ''      
+ops:
+  dbt_bronze_run_op:
+    config:
+      project_dir: ../dbt/bronze
+  dbt_silver_run_op:
+    config:
+      project_dir: ../dbt/silver
+  dbt_gold_run_op:
+    config:
+      project_dir: ../dbt/gold
+  dbt_bronze_test_doc_sources_op:
+    config:
+      project_dir: ../dbt/bronze
+  dbt_silver_test_doc_sources_op:
+    config:
+      project_dir: ../dbt/silver
+  dbt_gold_test_doc_sources_op:
+    config:
+      project_dir: ../dbt/gold
+  download_yahoo_finance_files_op:  
+    config: 
+      target_file: /home/data/stage/stocks.csv
+      symbols: 
+        - AAPL
+        - GOOGL
+        - ORCL
+        - MSFT
+        - CRM
+        - IBM
+        - AMZN
+        - 'GC=F'
+        - 'BTC-USD'
+        - 'ETH-USD'
+      start_date: '2000-01-01'
+      end_date: '2022-06-30'
+    

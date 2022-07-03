@@ -1,0 +1,19 @@
+ops:
+  download_yahoo_finance_files_op:  
+    config: 
+      target_file: /home/data/stage/stocks.csv
+      symbols: 
+        - AAPL
+        - GOOGL
+        - ORCL
+        - MSFT
+        - CRM
+        - IBM
+        - AMZN
+        - 'GC=F'
+      start_date: '2000-01-01'
+      end_date: '2022-06-30'
+    
+
+    
+

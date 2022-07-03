@@ -1,0 +1,55 @@
+# Mac
+.DS_Store
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+.vscode
+
+# data
+data/mariadb/*
+data/minio/*
+data/spark/notebooks/.ipynb_checkpoints
+data/spark/notebooks/metastore_db
+data/spark/notebooks/derby.log
+data/spark/warehouse/*
+data/stage/*
+data/trino/*
+data/postgres/*
+data/dremio/*
+data/elasticsearch/*
+data/metabase/*
+data/backup/*
+data/html/index.*.html
+
+# logs
+log/*
+projects/dbt/**/logs
+projects/dbt/**/dbt_packages
+projects/dbt/**/target
+
+# conf
+conf/**/*.jks
+conf/**/*.crt
+conf/cube/.cubestore
+
+# python
+
+**/__pycache__
+
+# JetBrains
+**/.idea
+
+# Dagster
+projects/dagster/*.log
+projects/dagster/metastore_db
