@@ -43,5 +43,5 @@ ops:
         - 'BTC-USD'
         - 'ETH-USD'
       start_date: '2000-01-01'
-      end_date: '2022-06-30'
+      end_date: 'yesterday'
     
