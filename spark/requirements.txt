@@ -19,3 +19,4 @@ requests==2.28.0
 kaggle==1.5.12
 yfinance
 pmdarima
+matplotlib

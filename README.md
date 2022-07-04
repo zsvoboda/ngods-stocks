@@ -138,6 +138,11 @@ Analytical (semantic) model is defined in [cube.dev](https://cube.dev/) and is u
 
 ![Metabase](./img/metabase.png)
 
+## ngods machine learning
+[Jupyter Notebooks](https://jupyter.org/) can be used for machine learning.
+
+![Jupyter](./img/jupyter.arima.png)
+
 ## ngods data catalog and governance
 ngods uses [DataHub](https://www.datahub.io/) as data catalog and for governance purposes. DataHub crawls all the data from the data stack and stores it in the catalog. 
 
@@ -188,6 +193,11 @@ The demo analytics model is defined in the [cube.dev schema](./conf/cube/schema/
 
 [Metabase](http://localhost:3030/question#eyJkYXRhc2V0X3F1ZXJ5Ijp7InR5cGUiOiJuYXRpdmUiLCJuYXRpdmUiOnsicXVlcnkiOiJzZWxlY3QgXG4gICAgICAgIGR0LCBcbiAgICAgICAgc3ltYm9sLCBcbiAgICAgICAgcHJpY2VfY2xvc2VfcmVsYXRpdmVfYXZnIFxuICAgIGZyb20gU3RvY2tNYXJrZXRzTW9udGhseVxuICAgIHdoZXJlIFxuICAgICAgICBzeW1ib2wgaW4gKCdBQVBMJywgJ0JUQy1VU0QnLCAnR0M9RicpIGFuZCBcbiAgICAgICAgZHQgPj0gJzIwMTQtMDktMDEnXG4gICAgb3JkZXIgYnkgZHQsIHN5bWJvbFxuICAgICIsInRlbXBsYXRlLXRhZ3MiOnt9fSwiZGF0YWJhc2UiOjN9LCJkaXNwbGF5IjoibGluZSIsImRpc3BsYXlJc0xvY2tlZCI6dHJ1ZSwidmlzdWFsaXphdGlvbl9zZXR0aW5ncyI6eyJncmFwaC5kaW1lbnNpb25zIjpbImR0Iiwic3ltYm9sIl0sImdyYXBoLm1ldHJpY3MiOlsicHJpY2VfY2xvc2VfcmVsYXRpdmVfYXZnIl0sImdyYXBoLnhfYXhpcy50aXRsZV90ZXh0IjoiRGF0ZSAobW9udGhzKSIsImdyYXBoLnlfYXhpcy50aXRsZV90ZXh0IjoiQ2xvc2UgcHJpY2UgKHJlbGF0aXZlIHRvIEphbiAxc3QgMjAwMCkifSwib3JpZ2luYWxfY2FyZF9pZCI6MzN9) is connected to the cube.dev analytical model. You can run [SQL queries](https://cube.dev/docs/backend/sql) on top of the cube.dev schema.  
 
+## Demo machine learning
+The demo contains a simple ARIMA time-series prediction model that is trained on the `Apple:AAPL` stock data. The model is trained on 29 months of data and predicts the next month.
+
+![Jupyter ARIMA](./img/jupyter.arima.png)
+
 ## Demo data catalog
 The ngods data stack includes [DataHub catalog](https://datahubproject.io/) that you can use to capture all database tables, and their dependencies.
 
@@ -236,6 +246,11 @@ Check out the Metabase ( `metabase@ngods.com` / `metabase1` )connection to cube.
 ![Metabase connection to cube.dev](./img/demo/metabase.cube.connection.png)
 
 You can create your own data visualizations and dashboards. See the [Metabase documentation](https://metabase.com/docs/latest) for more information.
+
+## Predict stock close price
+The demo contains a simple [ARIMA time-series prediction model](http://localhost:8888/notebooks/notebooks/arima.ipynb) that is trained on the `Apple:AAPL` stock data. The model is trained on 29 months of data and predicts the next month.
+
+![Jupyter ARIMA](./img/jupyter.arima.png)
 
 ## Populate data catalog
 Open the [DataHub ingestion page](http://localhost:9002/ingestion) and create the ingestion crawlers for all dbt phases and Trino schemas from these [ingestion recipes](./projects/datahub/).
