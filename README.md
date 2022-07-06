@@ -35,7 +35,6 @@ ngods requires a machine with at least 16GB RAM and Intel or Arm 64 CPU running 
 
 ```bash
 git clone https://github.com/zsvoboda/ngods-stocks.git
-cd ngods-stocks
 ```
 
 2. Select `docker-compose` script for your CPU architecture 
@@ -53,8 +52,6 @@ cp docker-compose.arm64.yml docker-compose.yml
 3. Start it using the `docker-compose up` command
 
 ```bash
-cd ngods-stocks
-
 docker-compose up -d
 ```
 
@@ -63,8 +60,6 @@ This can take quite long depending on your network speed.
 4. Stop it using the `docker-compose down` command
 
 ```bash
-cd ngods-stocks
-
 docker-compose down
 ```
 
@@ -88,7 +83,7 @@ Here are few distribution's directories that you'll need:
 The data stack has the following endpoints
 
 - Spark
-    - http://localhost:8088 - Jupyter notebooks 
+    - http://localhost:8888 - Jupyter notebooks 
     - `jdbc:hive2://localhost:10000` JDBC URL (no username / password)
     - localhost:7077 - Spark API endpoint
     - http://localhost:8061 - Spark master node monitoring page 
@@ -96,21 +91,19 @@ The data stack has the following endpoints
     - http://localhost:18080 - Spark history server page 
 - Trino
     - `jdbc:trino://localhost:8060` JDBC URL (username `trino` / no password)
-- Dagster
-    - http://localhost:3070 - Dagster orchestration UI
-- DataHub
-    - http://localhost:9002 - DataHub catalog UI
 - Postgres
     - `jdbc:postgresql://localhost:5432/postgres` JDBC URL (username `postgres` / password `postgres`)
-- Minio
-    - http://localhost:9001 - Minio UI (username `minio` / password `minio123`)
 - Cube.dev
     - http://localhost:4000 - cube.dev development UI 
     - `jdbc:postgresql://localhost:3245/cube` JDBC URL (username `cube` / password `cube`)
 - Metabase
-    - http://localhost:3030 (username `metabase@ngods.com` / password `metabase1`)
-
-Spark and Trino database engines share the `warehouse.bronze` and `warehouse.silver` schemas with Iceberg tables. 
+    - http://localhost:3030 Metabase UI (username `metabase@ngods.com` / password `metabase1`)
+- Dagster
+    - http://localhost:3070 - Dagster orchestration UI
+- DataHub
+    - http://localhost:9002 - DataHub catalog UI
+- Minio
+    - http://localhost:9001 - Minio UI (username `minio` / password `minio123`)
 
 ## ngods databases: Spark, Trino, and Postgres
 ngods stack includes three database engines: Spark, Trino, and Postgres. Both Spark and Trino have access to Iceberg tables in `warehouse.bronze` and `warehouse.silver` schemas. Trino engine can also access the `analytics.gold` schema in Postgres. Trino can federate queries between the Postgres and Iceberg tables. 
