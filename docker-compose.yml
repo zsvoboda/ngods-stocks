@@ -15,7 +15,7 @@ services:
       - metastore
       - minio
       - mariadb
-      - postgres
+      - postgres      
 
   spark:
     build: spark/
@@ -121,6 +121,7 @@ services:
     depends_on:
       - minio  
 
+
   postgres:
     image: postgres
     hostname: postgres
@@ -135,6 +136,7 @@ services:
       - ./data/postgres:/var/lib/postgresql/data/pgdata
     networks:
       - ndsnet
+
 
   cube:
     image: cubejs/cube
@@ -167,7 +169,7 @@ services:
       - KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS=0
       - KAFKA_HEAP_OPTS=-Xms256m -Xmx256m
     hostname: broker
-    image: kymeric/cp-kafka:latest
+    image: confluentinc/cp-kafka:5.4.0
     ports:
       - 29092:29092
       - 9092:9092
@@ -196,6 +198,7 @@ services:
     restart: on-failure:5
     networks:
       - ndsnet
+
 
   datahub-frontend-react:
     container_name: datahub-frontend-react
@@ -325,7 +328,7 @@ services:
       - SCHEMA_REGISTRY_HOST_NAME=schemaregistry
       - SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL=zookeeper:2181
     hostname: schema-registry
-    image: eugenetea/schema-registry-arm64:latest
+    image: confluentinc/cp-schema-registry:5.4.0
     ports:
       - 8081:8081
     networks:
@@ -337,14 +340,14 @@ services:
       - ZOOKEEPER_CLIENT_PORT=2181
       - ZOOKEEPER_TICK_TIME=2000
     hostname: zookeeper
-    image: kymeric/cp-zookeeper:latest
+    image: confluentinc/cp-zookeeper:5.4.0
     ports:
       - 2181:2181
     volumes:
       - ./data/zookeeper:/var/opt/zookeeper
     networks:
       - ndsnet
-  
+
   metabase:
     container_name: metabase
     depends_on:
@@ -355,12 +358,13 @@ services:
     hostname: metabase
     build: metabase/
     volumes:
-      - ./conf/metabase:/conf
+      - ./data/metabase:/conf
+      - ./data/metabase/plugins:/plugins
     ports:
       - 3030:3030
     networks:
       - ndsnet
-
+  
 networks:
   ndsnet:
     driver: bridge
