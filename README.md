@@ -47,6 +47,11 @@ cp docker-compose.x86.yml docker-compose.yml
 
 # use the docker-compose.arm64.yml for ARM (e.g. Apple M1/M2)
 cp docker-compose.arm64.yml docker-compose.yml
+
+# use the docker-compose.no.datahub.yml in case you have a slower hardware
+# or not enough memory
+# Datahub won't be running in this setup
+cp docker-compose.no.datahub.yml docker-compose.yml
 ```
 
 3. Start it using the `docker-compose up` command
@@ -212,7 +217,7 @@ Use `jdbc:postgresql://localhost:5432/postgres` JDBC URL with username `postgres
 ![Postgres JDBC connection](./img/demo/postgres.jdbc.connection.png)
 
 ### Spark 
-Use `jdbc:hive2://localhost:10000` JDBC URL with no username and password. You must use JDBC driver property `auth=noSasl` (append `;auth=noSasl` to your JDBC connection string).
+Use `jdbc:hive2://localhost:10000` JDBC URL with no username and password. You must use JDBC driver property `auth=noSasl` (append `;auth=noSasl` to your JDBC connection string    ).
 
 ![Spark JDBC connection](./img/demo/spark.jdbc.connection.png)
 

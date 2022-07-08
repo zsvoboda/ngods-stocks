@@ -1,0 +1,175 @@
+version: '3.9'
+services:
+  trino:
+    image: 'trinodb/trino'
+    hostname: trino
+    container_name: trino
+    ports:
+      - '8060:8060'
+    volumes:
+      - ./conf/trino:/etc/trino:ro
+      - ./data/stage:/stage:rw
+    networks:
+      - ndsnet
+    depends_on:
+      - metastore
+      - minio
+      - mariadb
+      - postgres      
+
+  spark:
+    build: spark/
+    hostname: spark
+    container_name: spark
+    environment:
+      - AWS_ACCESS_KEY_ID=minio
+      - AWS_SECRET_ACCESS_KEY=minio123
+      - AWS_REGION=us-east-1
+    volumes:
+      - ./data/spark/warehouse:/home/iceberg/warehouse
+      - ./conf/spark:/opt/spark/conf
+      - ./data/stage:/home/data/stage
+      - ./data/html:/home/data/html
+      - ./data/spark/notebooks:/home/iceberg/notebooks/notebooks
+      - ./projects/dagster:/opt/dagster/app/
+      - ./projects/dbt:/opt/dagster/dbt/
+    ports:
+      - 8888:8888 # Spark notebook port
+      - 7077:7077 # Spark port
+      - 8061:8061 # Spark master web ui port
+      - 8062:8062 # Spark worker web ui port
+      - 10000:10000 # Thrift ODBC/JDBC port
+      - 18080:18080 # Spark history web ui port
+      - '3070:3070' # dagit
+    networks:
+      - ndsnet
+    command: 
+      - notebook
+    depends_on:
+      - metastore
+      - minio
+      - trino
+      - postgres
+
+  mariadb:
+    image: 'mariadb'
+    hostname: mariadb
+    container_name: mariadb
+    ports:
+      - '33306:3306'
+    volumes:
+      - ./data/mariadb:/var/lib/mysql  
+      - ./conf/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+      - MYSQL_DATABASE=metastore_db
+    networks:
+      - ndsnet
+
+  metastore:
+    hostname: metastore
+    container_name: metastore
+    build: metastore/
+    ports:
+      - '9083:9083' # Metastore Thrift
+    volumes:
+      - ./conf/metastore/metastore-site.xml:/opt/metastore/conf/metastore-site.xml:ro
+    environment:
+      - METASTORE_DB_HOSTNAME=mariadb
+      - HADOOP_HOME=/opt/hadoop
+      - HIVE_HOME=/opt/metastore
+    networks:
+      - ndsnet
+    depends_on:
+      - mariadb
+
+  minio:
+    hostname: minio
+    image: 'minio/minio'
+    container_name: minio
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - ./data/minio:/data
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=minio123
+    command: server /data --console-address ":9001"
+    networks:
+      - ndsnet
+
+  mc:
+    image: minio/mc
+    container_name: mc
+    hostname: mc
+    environment:
+      - AWS_ACCESS_KEY_ID=minio
+      - AWS_SECRET_ACCESS_KEY=minio123
+      - AWS_REGION=us-east-1
+    networks:
+      - ndsnet
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc config host add minio http://minio:9000 minio minio123) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb minio/warehouse;
+      /usr/bin/mc policy set public minio/warehouse;
+      exit 0;
+      "    
+    depends_on:
+      - minio  
+
+  postgres:
+    image: postgres
+    hostname: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data/pgdata
+    networks:
+      - ndsnet
+
+  cube:
+    image: cubejs/cube
+    container_name: cube
+    hostname: cube
+    volumes:
+      - ./conf/cube:/cube/conf
+    ports:
+      - 3000:3000 
+      - 4000:4000
+      - 3245:3245
+    networks:
+      - ndsnet
+    depends_on:
+      - trino
+      - spark
+      - postgres
+      - mariadb
+
+  metabase:
+    container_name: metabase
+    depends_on:
+      - trino
+      - spark
+      - postgres
+      - cube
+    hostname: metabase
+    build: metabase/
+    volumes:
+      - ./conf/metabase:/conf
+    ports:
+      - 3030:3030
+    networks:
+      - ndsnet
+  
+networks:
+  ndsnet:
+    driver: bridge
