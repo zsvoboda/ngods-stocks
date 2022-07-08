@@ -230,7 +230,7 @@ Use `jdbc:trino://localhost:8060` JDBC URL with `trino` username and no password
 
 Trino provides access to all demo tables in all schemas (`bronze`, `silver`, and `gold`).
 
-![Trino schemas](./img/demo/trino.schemas.png){ width=50% }
+![Trino schemas](./img/demo/trino.schemas.png)
 
 You can now check out all demo tables and data using your SQL tool.
 
