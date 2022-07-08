@@ -42,16 +42,18 @@ git clone https://github.com/zsvoboda/ngods-stocks.git
 ```bash
 cd ngods-stocks
 
+# use the docker-compose.no.datahub.yml in case you have a slower hardware
+# or not enough memory
+# Datahub won't be running in this setup
+# This is the default config 
+# This docker-compose script is for both Intel and ARM CPUs
+cp docker-compose.no.datahub.yml docker-compose.yml
+
 # use the docker-compose.x86.yml for Intel CPU 
 cp docker-compose.x86.yml docker-compose.yml
 
 # use the docker-compose.arm64.yml for ARM (e.g. Apple M1/M2)
 cp docker-compose.arm64.yml docker-compose.yml
-
-# use the docker-compose.no.datahub.yml in case you have a slower hardware
-# or not enough memory
-# Datahub won't be running in this setup
-cp docker-compose.no.datahub.yml docker-compose.yml
 ```
 
 3. Start it using the `docker-compose up` command
