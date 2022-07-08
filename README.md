@@ -212,7 +212,7 @@ Use `jdbc:postgresql://localhost:5432/postgres` JDBC URL with username `postgres
 ![Postgres JDBC connection](./img/demo/postgres.jdbc.connection.png)
 
 ### Spark 
-Use `jdbc:hive2://localhost:10000` JDBC URL with no username and password.
+Use `jdbc:hive2://localhost:10000` JDBC URL with no username and password. You must use JDBC driver property `auth=noSasl` (append `;auth=noSasl` to your JDBC connection string).
 
 ![Spark JDBC connection](./img/demo/spark.jdbc.connection.png)
 
