@@ -7,7 +7,7 @@ This repository contains a simple stock market demo of ngods data stack. This de
 4. Create a analytics data model using [cube.dev](https://cube.dev/).
 5. Create data visualizations and dashboards using [Metabase](https://www.metabase.com/).
 
-The demo is packaged as [docker-compose](https://github.com/docker/compose) script that downloads, installs, and runs all components of the ngods dayta stack and the demo.
+The demo is packaged as [docker-compose](https://github.com/docker/compose) script that downloads, installs, and runs all components of the ngods data stack and the demo.
 
 # ngods
 ngods stands for New Generation Opensource Data Stack. It includes the following components: 
@@ -39,6 +39,8 @@ git clone https://github.com/zsvoboda/ngods-stocks.git
 2. Start it using the `docker-compose up` command
 
 ```bash
+cd ngods-stocks
+
 docker-compose up -d
 ```
 
@@ -55,15 +57,12 @@ Here are few distribution's directories that you'll need:
 
 - `conf` configuration of all data stack components
     - `cube` cube.dev schema (semantic model definition)
-    - `trino` Trino config files and catalogs definitions
-    - `spark` Spark configuration
 - `data` main data directory 
     - `minio` root data directory (contains buckets and file data)
     - `spark` Jupyter notebooks
     - `stage` file stage data. Spark can access this directory via `/home/data/stage/` path. 
 - `projects` dbt, Dagster, and DataHub projects
     - `dagster` Dagster orchestration project
-    - `datahub` DataHub catalog crawling recipes 
     - `dbt` dbt transformations (one project per each medallion stage: `bronze`, `silver`, and `gold`) 
 
 ## ngods endpoints
@@ -71,7 +70,7 @@ The data stack has the following endpoints
 
 - Spark
     - http://localhost:8888 - Jupyter notebooks 
-    - `jdbc:hive2://localhost:10000` JDBC URL (no username / password)
+    - `jdbc:hive2://localhost:10000;auth=noSasl` JDBC URL (no username / password)
     - localhost:7077 - Spark API endpoint
     - http://localhost:8061 - Spark master node monitoring page 
     - http://localhost:8062 - Spark slave node monitoring page 
@@ -79,7 +78,7 @@ The data stack has the following endpoints
 - Trino
     - `jdbc:trino://localhost:8060` JDBC URL (username `trino` / no password)
 - Postgres
-    - `jdbc:postgresql://localhost:5432/postgres` JDBC URL (username `postgres` / password `postgres`)
+    - `jdbc:postgresql://localhost:5432/ngods` JDBC URL (username `ngods` / password `ngods`)
 - Cube.dev
     - http://localhost:4000 - cube.dev development UI 
     - `jdbc:postgresql://localhost:3245/cube` JDBC URL (username `cube` / password `cube`)
@@ -178,11 +177,6 @@ The demo contains a simple ARIMA time-series prediction model that is trained on
 
 ![Jupyter ARIMA](./img/jupyter.arima.png)
 
-## Demo data catalog
-The ngods data stack includes [DataHub catalog](https://datahubproject.io/) that you can use to capture all database tables, and their dependencies.
-
-**NOTE:** DataHub is not included in this demo. 
-
 # Running the demo
 To run the demo, you need to install the [ngods data stack](#ngods-installation).
 
@@ -233,15 +227,6 @@ You can create your own data visualizations and dashboards. See the [Metabase do
 The demo contains a simple [ARIMA time-series prediction model](http://localhost:8888/notebooks/notebooks/arima.ipynb) that is trained on the `Apple:AAPL` stock data. The model is trained on 29 months of data and predicts the next month.
 
 ![Jupyter ARIMA](./img/jupyter.arima.png)
-
-## Populate data catalog
-Open the [DataHub ingestion page](http://localhost:9002/ingestion) and create the ingestion crawlers for all dbt phases and Trino schemas from these [ingestion recipes](./projects/datahub/).
-
-![DataHub ingestion recipes](./img/demo/datahub.ingestion.recipes.png)
-
-Then execute these recipes and use `*` search phrase to see the demo tables in the catalog.
-
-![DataHub search](./img/demo/datahub.search.png)
 
 # Support
 Create a [github issue](https://github.com/zsvoboda/ngods-stocks/issues) if you have any questions.
