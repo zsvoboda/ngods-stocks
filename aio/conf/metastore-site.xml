@@ -24,12 +24,12 @@
 
     <property>
         <name>javax.jdo.option.ConnectionUserName</name>
-        <value>postgres</value>
+        <value>ngods</value>
     </property>
 
     <property>
         <name>javax.jdo.option.ConnectionPassword</name>
-        <value>postgres</value>
+        <value>ngods</value>
     </property>
 
     <property>

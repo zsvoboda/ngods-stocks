@@ -18,7 +18,7 @@ ngods stands for New Generation Opensource Data Stack. It includes the following
 - [Trino](https://trino.io/) for federated data query 
 - [dbt](https://www.getdbt.com/) for ELT 
 - [Dagster](https://dagster.io/) for data orchetsration 
-- [DataHub](https://datahubproject.io/) as a data catalog and governance layer
+- [DataHub](https://datahubproject.io/) as a data catalog and governance layer (not included in the demo)
 - [cube.dev](https://cube.dev/) for data analysis and semantic data model 
 - [Metabase](https://www.metabase.com/) for self-service data visualization (dashboards) 
 
@@ -37,26 +37,7 @@ ngods requires a machine with at least 16GB RAM and Intel or Arm 64 CPU running 
 git clone https://github.com/zsvoboda/ngods-stocks.git
 ```
 
-2. Select `docker-compose` script for your CPU architecture 
-
-```bash
-cd ngods-stocks
-
-# use the docker-compose.no.datahub.yml in case you have a slower hardware
-# or not enough memory
-# Datahub won't be running in this setup
-# This is the default config 
-# This docker-compose script is for both Intel and ARM CPUs
-cp docker-compose.no.datahub.yml docker-compose.yml
-
-# use the docker-compose.x86.yml for Intel CPU 
-cp docker-compose.x86.yml docker-compose.yml
-
-# use the docker-compose.arm64.yml for ARM (e.g. Apple M1/M2)
-cp docker-compose.arm64.yml docker-compose.yml
-```
-
-3. Start it using the `docker-compose up` command
+2. Start it using the `docker-compose up` command
 
 ```bash
 docker-compose up -d
@@ -64,7 +45,7 @@ docker-compose up -d
 
 This can take quite long depending on your network speed.
 
-4. Stop it using the `docker-compose down` command
+3. Stop it using the `docker-compose down` command
 
 ```bash
 docker-compose down
@@ -107,8 +88,6 @@ The data stack has the following endpoints
     - http://localhost:3030 Metabase UI (username `metabase@ngods.com` / password `metabase1`)
 - Dagster
     - http://localhost:3070 - Dagster orchestration UI
-- DataHub
-    - http://localhost:9002 - DataHub catalog UI
 - Minio
     - http://localhost:9001 - Minio UI (username `minio` / password `minio123`)
 
@@ -155,6 +134,8 @@ DataHub catalog contains all database tables, their schemas, and dependencies.
 ![DataHub lineage](./img/datahub.lineage.png)
 
 DataHub crawling recipes are stored in the [DataHub project directory](./projects/datahub/).
+
+NOTE: DataHub is not included in this demo. 
 
 # Stock market analysis demo 
 This stock market demo allows you to perform ad-hoc data analysis of selected tickers data.
