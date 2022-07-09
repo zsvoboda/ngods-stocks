@@ -18,7 +18,6 @@ ngods stands for New Generation Opensource Data Stack. It includes the following
 - [Trino](https://trino.io/) for federated data query 
 - [dbt](https://www.getdbt.com/) for ELT 
 - [Dagster](https://dagster.io/) for data orchetsration 
-- [DataHub](https://datahubproject.io/) as a data catalog and governance layer (not included in the demo)
 - [cube.dev](https://cube.dev/) for data analysis and semantic data model 
 - [Metabase](https://www.metabase.com/) for self-service data visualization (dashboards) 
 
@@ -135,7 +134,7 @@ DataHub catalog contains all database tables, their schemas, and dependencies.
 
 DataHub crawling recipes are stored in the [DataHub project directory](./projects/datahub/).
 
-NOTE: DataHub is not included in this demo. 
+**NOTE:** DataHub is not included in this demo. 
 
 # Stock market analysis demo 
 This stock market demo allows you to perform ad-hoc data analysis of selected tickers data.
@@ -181,6 +180,8 @@ The demo contains a simple ARIMA time-series prediction model that is trained on
 
 ## Demo data catalog
 The ngods data stack includes [DataHub catalog](https://datahubproject.io/) that you can use to capture all database tables, and their dependencies.
+
+**NOTE:** DataHub is not included in this demo. 
 
 # Running the demo
 To run the demo, you need to install the [ngods data stack](#ngods-installation).
