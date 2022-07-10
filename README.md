@@ -184,20 +184,5 @@ Analytical (semantic) model is defined in [cube.dev](https://cube.dev/) and is u
 
 ![Jupyter](./img/jupyter.arima.png)
 
-## ngods data catalog and governance
-ngods uses [DataHub](https://www.datahub.io/) as data catalog and for governance purposes. DataHub crawls all the data from the data stack and stores it in the catalog. 
-
-![DataHub crawler](./img/datahub.crawler.png)
-
-DataHub catalog contains all database tables, their schemas, and dependencies.  
-
-![DataHub schema](./img/datahub.schema.png)
-
-![DataHub lineage](./img/datahub.lineage.png)
-
-DataHub crawling recipes are stored in the [DataHub project directory](./projects/datahub/).
-
-**NOTE:** DataHub is not included in this demo. 
-
 # Support
 Create a [github issue](https://github.com/zsvoboda/ngods-stocks/issues) if you have any questions.
