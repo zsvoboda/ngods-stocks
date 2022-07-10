@@ -1,29 +1,27 @@
 # ngods stock market demo 
-This repository contains a simple stock market demo of ngods data stack. This demo shows how to use the ngods data stack to create a simple stock market analytsis demo. It performs the following steps:
+This repository contains a stock market analysis demo of the ngods data stack. The demo performs the following steps:
 
-1. Download historical ticker data from [Yahoo Finance API](https://finance.yahoo.com/).
-2. Store the data in ngods data warehouse (using [Iceberg](https://iceberg.apache.org/) format).
-3. Transform the data (e.g. normalize ticker prices) using [dbt](https://www.getdbt.com/).
-4. Create a analytics data model using [cube.dev](https://cube.dev/).
-5. Create data visualizations and dashboards using [Metabase](https://www.metabase.com/).
+1. Download selected stock symbols data from [Yahoo Finance API](https://finance.yahoo.com/).
+2. Store the stock data in ngods data warehouse (using [Iceberg](https://iceberg.apache.org/) format).
+3. Transform the data (e.g. normalize stock prices) using [dbt](https://www.getdbt.com/).
+4. Expose analytics data model using [cube.dev](https://cube.dev/).
+5. Visualize data as reports and dashboards using [Metabase](https://www.metabase.com/).
 
-The demo is packaged as [docker-compose](https://github.com/docker/compose) script that downloads, installs, and runs all components of the ngods data stack and the demo.
+The demo is packaged as [docker-compose](https://github.com/docker/compose) script that downloads, installs, and runs all components of the data stack.
 
 # ngods
 ngods stands for New Generation Opensource Data Stack. It includes the following components: 
 
-- [Minio](https://min.io) for local S3 storage 
-- [Apache Iceberg](https://iceberg.apache.org) as a data storage format 
 - [Apache Spark](https://spark.apache.org) for data transformation 
+- [Apache Iceberg](https://iceberg.apache.org) as a data storage format 
 - [Trino](https://trino.io/) for federated data query 
 - [dbt](https://www.getdbt.com/) for ELT 
 - [Dagster](https://dagster.io/) for data orchetsration 
 - [cube.dev](https://cube.dev/) for data analysis and semantic data model 
 - [Metabase](https://www.metabase.com/) for self-service data visualization (dashboards) 
+- [Minio](https://min.io) for local S3 storage 
 
 ![ngods components](./img/ngods.architecture.png)
-
-ngods data pipeline is inspired by [Databrick’s medallion architecture](https://databricks.com/fr/glossary/medallion-architecture) that uses bronze, silver, and gold data stages. 
 
 ngods is open-sourced under a [BSD license](https://github.com/zsvoboda/ngods-stocks/blob/main/LICENSE) and it is distributed as a docker-compose script that supports Intel and ARM architectures.
 
@@ -36,7 +34,7 @@ ngods requires a machine with at least 16GB RAM and Intel or Arm 64 CPU running 
 git clone https://github.com/zsvoboda/ngods-stocks.git
 ```
 
-2. Start it using the `docker-compose up` command
+2. Start the data stack with the `docker-compose up` command
 
 ```bash
 cd ngods-stocks
@@ -44,13 +42,61 @@ cd ngods-stocks
 docker-compose up -d
 ```
 
-This can take quite long depending on your network speed.
+**Note:** This can take quite long depending on your network speed.
 
-3. Stop it using the `docker-compose down` command
+3. Stop the data stack via the `docker-compose down` command
 
 ```bash
 docker-compose down
 ```
+
+4. Execute the data pipeline from the Dagster console at http://localhost:3070/ with [this yaml config file](./projects/dagster/e2e.yaml).
+
+![Dagster e2e](./img/demo/dagster.e2e.png)
+
+Cut and paste the content of the[e2e.yaml file](./projects/dagster/e2e.yaml) to this [Dagster UI console page](http://localhost:3070/workspace/workspace@workspace.py/jobs/e2e/playground) and start the data pipeline by clicking the `Launch Run` button. 
+
+You can customize the list of stock symbols that will be downloaded. 
+
+5. Download [DBeaver](https://dbeaver.io/download/) SQL tool.
+
+6. Connect to the Postgres database that contains the `gold` stage data. Use `jdbc:postgresql://localhost:5432/postgres` JDBC URL with username `postgres` and password `postgres`.
+
+![Postgres JDBC connection](./img/demo/postgres.jdbc.connection.png)
+
+7. Connect to the Trino database that has access to all data stages ((`bronze`, `silver`, and `gold` schemas of the `warehouse` database). Use `jdbc:trino://localhost:8060` JDBC URL with username `trino` and password `trino`. 
+
+![Trino JDBC connection](./img/demo/trino.jdbc.connection.png)
+
+![Trino schemas](./img/demo/trino.schemas.png)
+
+8. Connect to the Spark database that is used for data transformations. Use `jdbc:hive2://localhost:10000;auth=noSasl` JDBC URL with username `spark` and password `spark`.
+### Spark 
+Use  JDBC URL with no username and password. You must use JDBC driver property `auth=noSasl` (append `;auth=noSasl` to your JDBC connection string    ).
+
+![Spark JDBC connection](./img/demo/spark.jdbc.connection.png)
+
+
+You can now check out all demo tables and data using your SQL tool.
+
+## Analyze data
+Review and customize the [cube.dev metrics, and dimensions](./conf/cube/schema/). Test these metrics in the [cube.dev playground](http://localhost:4000).
+
+![cube.dev playground](./img/demo/cube.playground.png)
+
+See the [cube.dev documentation](https://cube.dev/docs/) for more information.
+
+Check out the Metabase ( `metabase@ngods.com` / `metabase1` )connection to cube.dev connection on the [Metabase admin page](http://localhost:3030/admin/databases/3) 
+
+![Metabase connection to cube.dev](./img/demo/metabase.cube.connection.png)
+
+You can create your own data visualizations and dashboards. See the [Metabase documentation](https://metabase.com/docs/latest) for more information.
+
+## Predict stock close price
+The demo contains a simple [ARIMA time-series prediction model](http://localhost:8888/notebooks/notebooks/arima.ipynb) that is trained on the `Apple:AAPL` stock data. The model is trained on 29 months of data and predicts the next month.
+
+![Jupyter ARIMA](./img/jupyter.arima.png)
+
 
 ## ngods directories
 Here are few distribution's directories that you'll need:
@@ -141,7 +187,8 @@ This stock market demo allows you to perform ad-hoc data analysis of selected ti
 ![Metabase](./img/metabase.png)
 
 ## Demo data pipeline
-The demo data pipeline is utilizes the [Databrick’s medallion architecture](https://databricks.com/fr/glossary/medallion-architecture)
+The demo data pipeline is utilizes the [medallion architecture](https://databricks.com/fr/glossary/medallion-architecture) with `bronze`, `silver`, and `gold` data stages. 
+
 
 ![data pipeline](./img/data.pipeline.png)
 
@@ -180,53 +227,6 @@ The demo contains a simple ARIMA time-series prediction model that is trained on
 # Running the demo
 To run the demo, you need to install the [ngods data stack](#ngods-installation).
 
-Then run the demo data pipeline from the Dagster console at http://localhost:3070/ using [this yaml config file](./projects/dagster/e2e.yaml).
-
-![Dagster e2e](./img/demo/dagster.e2e.png)
-
-Cut and paste the content of the[e2e.yaml file](./projects/dagster/e2e.yaml) to the Dagster console. You can customize the list of tickers that will be downloaded. Once you are done, click the `Launch Run` button. You can watch the progress of the pipeline in the Dagster console (it should take about a minute to complete).
-
-## Connect to the ngods databases
-You can connect to ngods databases from your SQL tool. I use [DBeaver](https://dbeaver.io/download/).
-
-### Postgres 
-Use `jdbc:postgresql://localhost:5432/postgres` JDBC URL with username `postgres` and password `postgres`.
-
-![Postgres JDBC connection](./img/demo/postgres.jdbc.connection.png)
-
-### Spark 
-Use `jdbc:hive2://localhost:10000` JDBC URL with no username and password. You must use JDBC driver property `auth=noSasl` (append `;auth=noSasl` to your JDBC connection string    ).
-
-![Spark JDBC connection](./img/demo/spark.jdbc.connection.png)
-
-### Trino 
-Use `jdbc:trino://localhost:8060` JDBC URL with `trino` username and no password.
-
-![Trino JDBC connection](./img/demo/trino.jdbc.connection.png)
-
-Trino provides access to all demo tables in all schemas (`bronze`, `silver`, and `gold`).
-
-![Trino schemas](./img/demo/trino.schemas.png)
-
-You can now check out all demo tables and data using your SQL tool.
-
-## Analyze data
-Review and customize the [cube.dev metrics, and dimensions](./conf/cube/schema/). Test these metrics in the [cube.dev playground](http://localhost:4000).
-
-![cube.dev playground](./img/demo/cube.playground.png)
-
-See the [cube.dev documentation](https://cube.dev/docs/) for more information.
-
-Check out the Metabase ( `metabase@ngods.com` / `metabase1` )connection to cube.dev connection on the [Metabase admin page](http://localhost:3030/admin/databases/3) 
-
-![Metabase connection to cube.dev](./img/demo/metabase.cube.connection.png)
-
-You can create your own data visualizations and dashboards. See the [Metabase documentation](https://metabase.com/docs/latest) for more information.
-
-## Predict stock close price
-The demo contains a simple [ARIMA time-series prediction model](http://localhost:8888/notebooks/notebooks/arima.ipynb) that is trained on the `Apple:AAPL` stock data. The model is trained on 29 months of data and predicts the next month.
-
-![Jupyter ARIMA](./img/jupyter.arima.png)
 
 # Support
 Create a [github issue](https://github.com/zsvoboda/ngods-stocks/issues) if you have any questions.
