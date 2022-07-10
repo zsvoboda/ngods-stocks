@@ -82,7 +82,7 @@ You can create your own data visualizations and dashboards. See the [Metabase do
 
 ![Postgres JDBC connection](./img/demo/postgres.jdbc.connection.png)
 
-10. Connect to the Trino database that has access to all data stages ((`bronze`, `silver`, and `gold` schemas of the `warehouse` database). Use `jdbc:trino://localhost:8060` JDBC URL with username `trino` and password `trino`. 
+10. Connect to the Trino database that has access to all data stages (`bronze`, `silver`, and `gold` schemas of the `warehouse` database). Use `jdbc:trino://localhost:8060` JDBC URL with username `trino` and password `trino`. 
 
 ![Trino JDBC connection](./img/demo/trino.jdbc.connection.png)
 
@@ -96,7 +96,7 @@ You can create your own data visualizations and dashboards. See the [Metabase do
 This chapter contains useful information for customizing the demo.
 
 ## ngods directories
-Here are few distribution's directories that you'll need:
+Here are few distribution's directories that you may need to customize:
 
 - `conf` configuration of all data stack components
     - `cube` cube.dev schema (semantic model definition)
@@ -158,20 +158,13 @@ and consists of the following phases:
 3. Silver stage Iceberg tables (warehouse.silver Spark schema) are created using dbt models that are executed in Spark ([./projects/dbt/silver](./projects/dbt/silver/models/stock_markets_with_relative_prices.sql)). 
 5. Gold stage Postgres tables (analytics.gold Trino schema) are created using dbt models that are executed in Trino ([./projects/dbt/gold](./projects/dbt/gold/models/stock_markets.sql)).
 
+![DBT models](./img/dbt.models.png)
+
 All data pipeline phases are orchestrated by [Dagster](https://www.dagster.io/) framework. Dagster operations, resources and jobs are defined in the [Dagster project](./projects/dagster/). 
 
 ![Dagster console](./img/dagster.console.png)
 
 The pipeline is executed by running the e2e job from the Dagster console at http://localhost:3070/ using [this yaml config file](./projects/dagster/e2e.yaml)
-
-All tables and their dependencies are registered in DataHub catalog that is available at http://localhost:9002/. DataHub crawling recipes are defined in the [DataHub project](./projects/datahub/).
-
-### dbt models
-There are three dbt models. One for each medaillon stage: `bronze`, `silver`, and `gold`.
-
-![dbt models](./img/dbt.models.png)
-
-The dbt models are defined in the [dbt project](./projects/dbt/).
 
 ## ngods analytics layer
 ngods includes [cube.dev](https://cube.dev/) for [semantic data model](./conf/cube/schema) and [Metabase](https://www.metabase.com/) for self-service analytics (dashboards, reports, and visualizations).
@@ -184,10 +177,10 @@ Analytical (semantic) model is defined in [cube.dev](https://cube.dev/) and is u
 
 [Metabase](https://www.metabase.com/) is connected to the [cube.dev](https://cube.dev/) via [SQL API](https://cube.dev/docs/backend/sql). End users can use it for self-service creation of dashboards, reports, and data visualizations. [Metabase](https://www.metabase.com/) is also directly connected to the gold schema in the Postgres database.
 
-![Metabase](./img/metabase.png)
+![Metabase](./img/demo/metabase.cube.connection.png)
 
 ## ngods machine learning
-[Jupyter Notebooks](https://jupyter.org/) can be used for machine learning.
+[Jupyter Notebooks](https://jupyter.org/) with Scala, Java and Python backends can be used for machine learning.
 
 ![Jupyter](./img/jupyter.arima.png)
 
