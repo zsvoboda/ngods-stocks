@@ -24,9 +24,7 @@ RUN mkdir -p ${PGDATA} ${HADOOP_HOME} ${SPARK_HOME}  ${TRINO_HOME}  ${HIVE_HOME}
             /home/iceberg/warehouse /home/iceberg/data /home/data/stage /home/iceberg/spark-events ${INSTALL_DIR}
 
 # install core packages 
-RUN --mount=target=/var/lib/apt/lists,type=cache \
-    --mount=target=/var/cache/apt,type=cache \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       sudo \
       curl \
@@ -49,7 +47,7 @@ WORKDIR ${INSTALL_DIR}
 
 # Install python deps
 COPY conf/requirements.txt .
-RUN --mount=type=cache,target=/root/.cache  pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 # Download and install IJava jupyter kernel
 RUN curl https://github.com/SpencerPark/IJava/releases/download/v1.3.0/ijava-1.3.0.zip -Lo ijava-1.3.0.zip \

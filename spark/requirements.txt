@@ -15,3 +15,8 @@ dagster-spark
 awscliv2
 markupsafe==2.0.1
 trino
+requests==2.28.0
+kaggle==1.5.12
+yfinance
+pmdarima
+matplotlib

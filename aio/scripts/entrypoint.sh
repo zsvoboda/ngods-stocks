@@ -18,7 +18,7 @@ ${MINIO_HOME}/bin/minio server ${MINIO_DATA_ROOT} --console-address ":9001" &
 sudo -u postgres /usr/lib/postgresql/13/bin/postgres -D /var/lib/postgresql/13/main -c config_file=/etc/postgresql/13/main/postgresql.conf &
 
 # minio ensure warehouse bucket
-until (${MINIO_HOME}/bin/mc config host add minio http://minio:9000 minio minio123) do echo '...waiting...' && sleep 1; done;
+until (${MINIO_HOME}/bin/mc config host add minio http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD}) do echo '...waiting...' && sleep 1; done;
 ${MINIO_HOME}/bin/mc mb minio/warehouse
 ${MINIO_HOME}/bin/mc policy set public minio/warehouse
 
