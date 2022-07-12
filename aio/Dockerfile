@@ -144,10 +144,10 @@ RUN chmod u+x ${SPARK_HOME}/* && \
 WORKDIR ${SPARK_HOME}
 RUN rm -rf ${INSTALL_DIR}
 
-COPY conf/spark-defaults.conf /opt/spark/conf
-COPY conf/metastore-site.xml ${HIVE_HOME}/conf/
-COPY conf/trino/ ${TRINO_HOME}/etc/
-COPY conf/dagster.yaml ${DAGSTER_HOME}/    
+COPY conf/spark-defaults.conf {SPARK_HOME}/conf
+COPY conf/metastore-site.xml ${HIVE_HOME}/conf
+COPY conf/trino/ ${TRINO_HOME}/etc
+COPY conf/dagster.yaml ${DAGSTER_HOME}
 COPY scripts/entrypoint.sh .
 
 USER postgres
