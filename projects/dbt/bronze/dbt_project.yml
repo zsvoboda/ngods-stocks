@@ -19,5 +19,5 @@ clean-targets:
 
 models:
   +materialized: table
-  +schema: warehouse.bronze
+  +schema: bronze
   +file_format: iceberg

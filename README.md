@@ -103,7 +103,7 @@ Here are few distribution's directories that you may need to customize:
 - `data` main data directory 
     - `minio` root data directory (contains buckets and file data)
     - `spark` Jupyter notebooks
-    - `stage` file stage data. Spark can access this directory via `/home/data/stage/` path. 
+    - `stage` file stage data. Spark can access this directory via `/var/lib/ngods/stage` path. 
 - `projects` dbt, Dagster, and DataHub projects
     - `dagster` Dagster orchestration project
     - `dbt` dbt transformations (one project per each medallion stage: `bronze`, `silver`, and `gold`) 

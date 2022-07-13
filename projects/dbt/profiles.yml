@@ -6,7 +6,7 @@ spark:
       method: thrift
       host: spark
       port: 10000
-      schema: warehouse.bronze
+      schema: bronze
       user: dbt
       password: dbt
       auth: NOSASL

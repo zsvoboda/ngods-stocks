@@ -30,7 +30,7 @@ ops:
       project_dir: ../dbt/gold
   download_yahoo_finance_files_op:  
     config: 
-      target_file: /home/data/stage/stocks.csv
+      target_file: /var/lib/ngods/stage/stocks.csv
       symbols: 
         - AAPL
         - GOOGL

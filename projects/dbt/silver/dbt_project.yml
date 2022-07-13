@@ -19,5 +19,5 @@ clean-targets:
 
 models:
   +materialized: table
-  +schema: warehouse.silver    
+  +schema: silver    
   +properties: {"format": "'ORC'", "using": "'ICEBERG'"}

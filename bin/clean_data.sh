@@ -8,5 +8,3 @@ cd ${NGODS_HOME}/data/minio && rm -rf * .*
 cd ${NGODS_HOME}/data/postgres && rm -rf * .* 
 # cd ${NGODS_HOME}/data/spark && rm -rf * .* 
 cd ${NGODS_HOME}/data/elasticsearch && rm -rf * .* 
-cd ${NGODS_HOME}/data/zookeeper && rm -rf * .* 
-cd ${NGODS_HOME}/data/zookeeper && rm -rf *.html 

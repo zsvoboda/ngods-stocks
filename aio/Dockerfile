@@ -1,27 +1,29 @@
 # syntax=docker/dockerfile:1
 FROM python:3.9-bullseye
 
-ARG TARGETOS
-ARG TARGETARCH
-
 ENV METASTORE_HADOOP_VERSION=3.2.0
 ENV METASTORE_VERSION=3.0.0
-
 ENV HADOOP_HOME=/opt/hadoop
 ENV HIVE_HOME=/opt/metastore
 ENV SPARK_HOME=/opt/spark
-ENV TRINO_HOME=/usr/lib/trino/
-ENV MINIO_HOME=/opt/minio/
-ENV PGDATA=/var/lib/postgresql/data/pgdata
-ENV DAGSTER_HOME=/opt/dagster/dagster_home
+ENV TRINO_HOME=/opt/trino
+ENV DAGSTER_HOME=/opt/dagster
+ENV BIN_DIR=/usr/bin
+
+ENV DAGSTER_DIR=/var/lib/ngods/dagster
+ENV DBT_DIR=/var/lib/ngods/dbt
+ENV NOTEBOOKS_DIR=/var/lib/ngods/notebooks
+ENV DATA_STAGE_DIR=/var/lib/ngods/stage
+ENV TRINO_DATA_DIR=/var/lib/trino/data
+
 # Add iceberg spark runtime jar to IJava classpath
 ENV IJAVA_CLASSPATH=/opt/spark/jars/*
 ENV PATH="/opt/spark/sbin:/opt/spark/bin:${PATH}"
 ENV INSTALL_DIR=/tmp/install
 
-RUN mkdir -p ${PGDATA} ${HADOOP_HOME} ${SPARK_HOME}  ${TRINO_HOME}  ${HIVE_HOME} ${MINIO_HOME}/bin /opt/dagster/dagster_home  \ 
-            /opt/dagster/app  /opt/dagster/dbt /home/iceberg/localwarehouse /home/iceberg/notebooks  \ 
-            /home/iceberg/warehouse /home/iceberg/data /home/data/stage /home/iceberg/spark-events ${INSTALL_DIR}
+RUN mkdir -p ${HADOOP_HOME} ${SPARK_HOME} ${TRINO_HOME} ${HIVE_HOME} ${MINIO_HOME}/bin ${DAGSTER_HOME}  \ 
+            ${TRINO_DATA_DIR} ${DAGSTER_DIR} ${DBT_DIR} ${DATA_STAGE_DIR} ${NOTEBOOKS_DIR} ${INSTALL_DIR} \
+            /root/.ipython/profile_default/startup
 
 # install core packages 
 RUN apt-get update && \
@@ -40,8 +42,7 @@ RUN apt-get update && \
       libsasl2-dev \
       unixodbc-dev \
       ssh \
-      postgresql \
-      postgresql-contrib
+      postgresql-client
 
 WORKDIR ${INSTALL_DIR}
 
@@ -53,10 +54,6 @@ RUN pip3 install -r requirements.txt
 RUN curl https://github.com/SpencerPark/IJava/releases/download/v1.3.0/ijava-1.3.0.zip -Lo ijava-1.3.0.zip \
   && unzip ijava-1.3.0.zip \
   && python3 install.py --sys-prefix 
-
-RUN mkdir -p /root/.ipython/profile_default/startup
-COPY conf/ipython/startup/00-prettytables.py /root/.ipython/profile_default/startup
-COPY conf/ipython/startup/README /root/.ipython/profile_default/startup
 
 # Download spark
 RUN curl https://dlcdn.apache.org/spark/spark-3.2.1/spark-3.2.1-bin-hadoop3.2.tgz -o spark-3.2.1-bin-hadoop3.2.tgz \
@@ -111,56 +108,24 @@ RUN curl https://downloads.apache.org/hive/hive-standalone-metastore-${METASTORE
 RUN curl https://jdbc.postgresql.org/download/postgresql-42.4.0.jar -Lo pgsql.jar \ 
     && cp pgsql.jar ${HIVE_HOME}/lib
 
-RUN curl https://dl.min.io/server/minio/release/linux-${TARGETARCH}/minio -Lo minio \ 
-    && chmod +x minio \ 
-    && mv minio ${MINIO_HOME}/bin
-
-RUN curl https://dl.min.io/client/mc/release/linux-${TARGETARCH}/mc -Lo mc \ 
-    && chmod +x mc \ 
-    && mv mc ${MINIO_HOME}/bin
-
-# Add a notebook command
-RUN echo '#! /bin/sh' >> /bin/notebook \
- && echo 'export PYSPARK_DRIVER_PYTHON=jupyter-notebook' >> /bin/notebook \
- && echo "export PYSPARK_DRIVER_PYTHON_OPTS=\"--notebook-dir=/home/iceberg/notebooks --ip='*' --NotebookApp.token='' --NotebookApp.password='' --port=8888 --no-browser --allow-root\"" >> /bin/notebook \
- && echo "pyspark" >> /bin/notebook \
- && chmod u+x /bin/notebook
-
-# Add a pyspark-notebook command (alias for notebook command for backwards-compatibility)
-RUN echo '#! /bin/sh' >> /bin/pyspark-notebook \
- && echo 'export PYSPARK_DRIVER_PYTHON=jupyter-notebook' >> /bin/pyspark-notebook \
- && echo "export PYSPARK_DRIVER_PYTHON_OPTS=\"--notebook-dir=/home/iceberg/notebooks --ip='*' --NotebookApp.token='' --NotebookApp.password='' --port=8888 --no-browser --allow-root\"" >> /bin/pyspark-notebook \
- && echo "pyspark" >> /bin/pyspark-notebook \
- && chmod u+x /bin/pyspark-notebook
-
-RUN chmod u+x ${SPARK_HOME}/* && \
-    chmod u+x ${SPARK_HOME}/bin/* && \
-    chmod u+x ${TRINO_HOME}/bin/* && \
-    chmod u+x ${HIVE_HOME}/bin/* && \
-    chmod u+x ${MINIO_HOME}/bin/* 
-
-WORKDIR ${SPARK_HOME}
-RUN rm -rf ${INSTALL_DIR}
-
-COPY conf/spark-defaults.conf {SPARK_HOME}/conf
+COPY conf/spark-defaults.conf ${SPARK_HOME}/conf
 COPY conf/metastore-site.xml ${HIVE_HOME}/conf
 COPY conf/trino/ ${TRINO_HOME}/etc
 COPY conf/dagster.yaml ${DAGSTER_HOME}
-COPY scripts/entrypoint.sh .
+COPY scripts/entrypoint.sh ${BIN_DIR}
+COPY conf/ipython/startup/00-prettytables.py /root/.ipython/profile_default/startup
+COPY conf/ipython/startup/README /root/.ipython/profile_default/startup
+COPY conf/notebook ${BIN_DIR}/notebook
+COPY conf/notebook ${BIN_DIR}/pyspark-notebook
 
-USER postgres
-
-RUN    /etc/init.d/postgresql start &&\
-    psql --command "CREATE USER ngods WITH SUPERUSER PASSWORD 'ngods';" &&\
-    createdb -O ngods ngods
-
-RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/13/main/pg_hba.conf
-RUN echo "listen_addresses='*'" >> /etc/postgresql/13/main/postgresql.conf
-
-USER root
+RUN chmod u+x ${SPARK_HOME}/*
+RUN chmod u+x ${SPARK_HOME}/bin/*
+RUN chmod u+x ${TRINO_HOME}/bin/*
+RUN chmod u+x ${HIVE_HOME}/bin/* 
+RUN chmod u+x ${BIN_DIR}/notebook
+RUN chmod u+x ${BIN_DIR}/pyspark-notebook
 
 EXPOSE 3070
-EXPOSE 8060
 EXPOSE 8060
 EXPOSE 8888
 EXPOSE 7077
@@ -169,12 +134,9 @@ EXPOSE 8062
 EXPOSE 10000
 EXPOSE 18080
 EXPOSE 9083
-EXPOSE 5432
-EXPOSE 9000
-EXPOSE 9001
 
-# Add VOLUMEs to allow backup of config, logs and databases
-VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
+WORKDIR ${SPARK_HOME}
+RUN rm -rf ${INSTALL_DIR}
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 CMD ["notebook"]
