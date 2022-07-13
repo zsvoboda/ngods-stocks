@@ -53,3 +53,6 @@ conf/cube/.cubestore
 # Dagster
 projects/dagster/*.log
 projects/dagster/metastore_db
+
+# Metabase 
+conf/metabase/metabase.db.trace.db
