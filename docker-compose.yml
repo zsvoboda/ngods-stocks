@@ -16,6 +16,11 @@ services:
     command: server /data --console-address ":9001"
     networks:
       - ndsnet
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   mc:
     image: minio/mc
@@ -35,7 +40,8 @@ services:
       exit 0;
       "    
     depends_on:
-      - minio  
+      minio:
+        condition: service_healthy  
 
   postgres:
     image: postgres
@@ -52,6 +58,11 @@ services:
       - ./data/postgres:/var/lib/postgresql/data/pgdata
     networks:
       - ndsnet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   
   aio:
     build: aio/
@@ -87,8 +98,10 @@ services:
     command: 
       - notebook
     depends_on:
-      - minio
-      - postgres
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
 
   cube:
     image: cubejs/cube
