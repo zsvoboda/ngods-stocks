@@ -15,7 +15,7 @@ ENV DBT_DIR=/var/lib/ngods/dbt
 ENV NOTEBOOKS_DIR=/var/lib/ngods/notebooks
 ENV DATA_STAGE_DIR=/var/lib/ngods/stage
 ENV TRINO_DATA_DIR=/var/lib/trino/data
-ENV HTML_DIR=/var/lib/html
+ENV HTML_DIR=/var/lib/ngods/html
 
 # Add iceberg spark runtime jar to IJava classpath
 ENV IJAVA_CLASSPATH=/opt/spark/jars/*
