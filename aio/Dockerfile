@@ -15,6 +15,7 @@ ENV DBT_DIR=/var/lib/ngods/dbt
 ENV NOTEBOOKS_DIR=/var/lib/ngods/notebooks
 ENV DATA_STAGE_DIR=/var/lib/ngods/stage
 ENV TRINO_DATA_DIR=/var/lib/trino/data
+ENV HTML_DIR=/var/lib/html
 
 # Add iceberg spark runtime jar to IJava classpath
 ENV IJAVA_CLASSPATH=/opt/spark/jars/*
@@ -22,7 +23,7 @@ ENV PATH="/opt/spark/sbin:/opt/spark/bin:${PATH}"
 ENV INSTALL_DIR=/tmp/install
 
 RUN mkdir -p ${HADOOP_HOME} ${SPARK_HOME} ${TRINO_HOME} ${HIVE_HOME} ${MINIO_HOME}/bin ${DAGSTER_HOME}  \ 
-            ${TRINO_DATA_DIR} ${DAGSTER_DIR} ${DBT_DIR} ${DATA_STAGE_DIR} ${NOTEBOOKS_DIR} ${INSTALL_DIR} \
+            ${TRINO_DATA_DIR} ${DAGSTER_DIR} ${DBT_DIR} ${DATA_STAGE_DIR} ${NOTEBOOKS_DIR} ${INSTALL_DIR} ${HTML_DIR} \
             /root/.ipython/profile_default/startup
 
 # install core packages 

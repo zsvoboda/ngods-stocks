@@ -72,6 +72,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=minio123
       - AWS_REGION=us-east-1
     volumes:
+      - ./data/html:/var/lib/html
       - ./data/stage:/var/lib/ngods/stage
       - ./data/spark/notebooks:/var/lib/ngods/notebooks
       - ./projects/dagster:/var/lib/ngods/dagster
