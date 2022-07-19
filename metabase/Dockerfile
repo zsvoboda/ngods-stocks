@@ -13,16 +13,18 @@ ENV MB_DB_FILE="/conf/metabase.db" \
     MB_PLUGINS_DIR="/plugins"
 
 # dependencies
-RUN apt-get update -yq && apt-get install -yq bash fonts-dejavu-core fonts-dejavu-extra fontconfig curl openjdk-11-jre-headless && \
+RUN mkdir -p ${MB_PLUGINS_DIR} && chmod a+rwx ${MB_PLUGINS_DIR} && \
+    mkdir -p $(dirname ${MB_DB_FILE}) && chmod a+rwx $(dirname ${MB_DB_FILE}) && \
+    apt-get update -yq && apt-get install -yq bash fonts-dejavu-core fonts-dejavu-extra fontconfig curl openjdk-11-jre-headless && \
     apt-get clean && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/ && \
+    curl https://github.com/starburstdata/metabase-driver/releases/download/1.0.5/starburst-1.0.5.metabase-driver.jar -Lo starburst-1.0.5.metabase-driver.jar && \
+    mv starburst-1.0.5.metabase-driver.jar ${MB_PLUGINS_DIR} && \
     mkdir -p /app/certs && \
     curl https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem -o /app/certs/rds-combined-ca-bundle.pem  && \
     keytool -noprompt -import -trustcacerts -alias aws-rds -file /app/certs/rds-combined-ca-bundle.pem -keystore /etc/ssl/certs/java/cacerts -keypass changeit -storepass changeit && \
     curl https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem -o /app/certs/DigiCertGlobalRootG2.crt.pem  && \
-    keytool -noprompt -import -trustcacerts -alias azure-cert -file /app/certs/DigiCertGlobalRootG2.crt.pem -keystore /etc/ssl/certs/java/cacerts -keypass changeit -storepass changeit && \
-    mkdir -p /plugins && chmod a+rwx /plugins && \
-    mkdir -p $(dirname ${MB_DB_FILE}) && chmod a+rwx $(dirname ${MB_DB_FILE}) && \
+    keytool -noprompt -import -trustcacerts -alias azure-cert -file /app/certs/DigiCertGlobalRootG2.crt.pem -keystore /etc/ssl/certs/java/cacerts -keypass changeit -storepass changeit && \ 
     useradd --shell /bin/bash metabase
 
 
