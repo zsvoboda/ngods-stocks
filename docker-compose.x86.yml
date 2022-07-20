@@ -85,7 +85,6 @@ services:
       - '10000:10000' # Thrift ODBC/JDBC port
       - '18080:18080' # Spark history web ui port
       - '3070:3070' # Dagster web ui port
-      - '8060:8060' # Trino
       - '9083:9083' # Metastore thrift
     networks:
       ndsnet:
@@ -93,11 +92,28 @@ services:
           - spark
           - dagster
           - dbt
-          - trino
           - metastore
           - aio
     command: 
       - notebook
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+  
+  trino:
+    build: trino/
+    container_name: trino
+    volumes:
+      - ./data/stage:/var/lib/ngods/stage
+    ports:
+      - '8060:8060' # Trino
+      - '8063:8063' # Trino
+    networks:
+      ndsnet:
+        aliases:
+          - trino
     depends_on:
       postgres:
         condition: service_healthy
