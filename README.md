@@ -88,7 +88,7 @@ You can create your own data visualizations and dashboards. See the [Metabase do
 
 ![Trino schemas](./img/demo/trino.schemas.png)
 
-11. Connect to the Spark database that is used for data transformations. Use `jdbc:hive2://localhost:10000` JDBC URL with no username and password. You'll need to specify JDBC driver property `auth=noSasl` for this connection.
+11. Connect to the Spark database that is used for data transformations. Use `jdbc:hive2://localhost:10009` JDBC URL with no username and password.
 
 ![Spark JDBC connection](./img/demo/spark.jdbc.connection.png)
 
@@ -113,7 +113,7 @@ The data stack has the following endpoints
 
 - Spark
     - http://localhost:8888 - Jupyter notebooks 
-    - `jdbc:hive2://localhost:10000;auth=noSasl` JDBC URL (no username / password)
+    - `jdbc:hive2://localhost:10009` JDBC URL (no username / password)
     - localhost:7077 - Spark API endpoint
     - http://localhost:8061 - Spark master node monitoring page 
     - http://localhost:8062 - Spark slave node monitoring page 

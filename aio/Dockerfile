@@ -7,6 +7,7 @@ ENV HADOOP_HOME=/opt/hadoop
 ENV HIVE_HOME=/opt/metastore
 ENV SPARK_HOME=/opt/spark
 ENV DAGSTER_HOME=/opt/dagster
+ENV KYUUBI_HOME=/opt/kyuubi
 ENV BIN_DIR=/usr/bin
 
 ENV DAGSTER_DIR=/var/lib/ngods/dagster
@@ -20,7 +21,7 @@ ENV IJAVA_CLASSPATH=/opt/spark/jars/*
 ENV PATH="/opt/spark/sbin:/opt/spark/bin:${PATH}"
 ENV INSTALL_DIR=/tmp/install
 
-RUN mkdir -p ${HADOOP_HOME} ${SPARK_HOME} ${HIVE_HOME} ${MINIO_HOME}/bin ${DAGSTER_HOME}  \ 
+RUN mkdir -p ${HADOOP_HOME} ${SPARK_HOME} ${HIVE_HOME} ${MINIO_HOME}/bin ${DAGSTER_HOME}  ${KYUUBI_HOME} \ 
              ${DAGSTER_DIR} ${DBT_DIR} ${DATA_STAGE_DIR} ${NOTEBOOKS_DIR} ${INSTALL_DIR} ${HTML_DIR} \
             /root/.ipython/profile_default/startup
 
@@ -38,6 +39,8 @@ RUN apt-get update && apt-get upgrade -y && \
       gcc \
       g++ \
       libsasl2-dev \
+		  libsasl2-2\ 
+		  libsasl2-modules-gssapi-mit\
       unixodbc-dev \
       ssh \
       postgresql-client \
@@ -94,6 +97,10 @@ RUN curl https://github.com/SpencerPark/IJava/releases/download/v1.3.0/ijava-1.3
   && curl https://downloads.apache.org/hive/hive-standalone-metastore-${METASTORE_VERSION}/hive-standalone-metastore-${METASTORE_VERSION}-bin.tar.gz -Lo hive.tgz \ 
     && tar xvzf hive.tgz --directory ${HIVE_HOME} --strip-components 1 \
     && rm hive.tgz \
+# Download and install Kyuubi JDBC
+  && curl https://dlcdn.apache.org/incubator/kyuubi/kyuubi-1.5.2-incubating/apache-kyuubi-1.5.2-incubating-bin.tgz -Lo kyuubi.tgz \ 
+    && tar xvzf kyuubi.tgz --directory ${KYUUBI_HOME} --strip-components 1 \
+    && rm kyuubi.tgz \
 # Download and install Postgres deiver for Hive metastore
   && curl https://repo1.maven.org/maven2/org/postgresql/postgresql/42.4.0/postgresql-42.4.0.jar -Lo pgsql.jar \ 
     && mv pgsql.jar ${HIVE_HOME}/lib 
@@ -121,6 +128,7 @@ EXPOSE 7077
 EXPOSE 8061
 EXPOSE 8062
 EXPOSE 10000
+EXPOSE 10009
 EXPOSE 18080
 EXPOSE 9083
 

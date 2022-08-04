@@ -83,6 +83,7 @@ services:
       - '8061:8061' # Spark master web ui port
       - '8062:8062' # Spark worker web ui port
       - '10000:10000' # Thrift ODBC/JDBC port
+      - '10009:10009' # Kyuubi JDBC port
       - '18080:18080' # Spark history web ui port
       - '3070:3070' # Dagster web ui port
       - '9083:9083' # Metastore thrift

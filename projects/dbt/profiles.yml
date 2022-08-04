@@ -5,11 +5,8 @@ spark:
       type: spark
       method: thrift
       host: spark
-      port: 10000
+      port: 10009
       schema: bronze
-      user: dbt
-      password: dbt
-      auth: NOSASL
       connect_retries: 5
       connect_timeout: 60
       retry_all: true
