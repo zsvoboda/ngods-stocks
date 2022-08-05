@@ -108,6 +108,10 @@ services:
     container_name: trino
     volumes:
       - ./data/stage:/var/lib/ngods/stage
+      - ./certs/trino.pass:/trino.pass
+      - ./certs/trino_key_and_cert.pem:/trino_key_and_cert.pem
+      - ./certs/trino_key.pem:/trino_key.pem
+      - ./certs/trino_cert.pem:/trino_cert.pem
     ports:
       - '8060:8060' # Trino
       - '8063:8063' # Trino
@@ -120,7 +124,7 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
-
+        
   cube:
     image: cubejs/cube
     container_name: cube

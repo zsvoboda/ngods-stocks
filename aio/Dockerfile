@@ -59,36 +59,36 @@ RUN curl https://github.com/SpencerPark/IJava/releases/download/v1.3.0/ijava-1.3
   && python3 install.py --sys-prefix \
   && rm -rf ijava-1.3.0.zip	install.py java \
 # Download aprk distrotion and install it
-  && curl https://archive.apache.org/dist/spark/spark-3.2.2/spark-3.2.2-bin-hadoop3.2.tgz -o spark-3.2.2-bin-hadoop3.2.tgz \
-    && tar xvzf spark-3.2.2-bin-hadoop3.2.tgz --directory /opt/spark --strip-components 1 \
-    && rm spark-3.2.2-bin-hadoop3.2.tgz \
+  && curl https://archive.apache.org/dist/spark/spark-3.3.0/spark-3.3.0-bin-hadoop3.tgz -o spark-3.3.0-bin-hadoop3.tgz \
+    && tar xvzf spark-3.3.0-bin-hadoop3.tgz --directory /opt/spark --strip-components 1 \
+    && rm spark-3.3.0-bin-hadoop3.tgz \
 # Download iceberg spark runtime
-  && curl https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-spark-runtime-3.2_2.12/0.13.2/iceberg-spark-runtime-3.2_2.12-0.13.2.jar -Lo iceberg-spark-runtime-3.2_2.12-0.13.2.jar \
-    && mv iceberg-spark-runtime-3.2_2.12-0.13.2.jar /opt/spark/jars \
+  && curl https://search.maven.org/remotecontent?filepath=org/apache/iceberg/iceberg-spark-runtime-3.3_2.12/0.14.0/iceberg-spark-runtime-3.3_2.12-0.14.0.jar -Lo iceberg-spark-runtime-3.3_2.12-0.14.0.jar \
+    && mv iceberg-spark-runtime-3.3_2.12-0.14.0.jar /opt/spark/jars \
 # Download Java AWS SDK
-  && curl https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/2.17.165/bundle-2.17.165.jar -Lo bundle-2.17.165.jar \
-    && mv bundle-2.17.165.jar /opt/spark/jars \
+  && curl https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/2.17.247/bundle-2.17.247.jar -Lo bundle-2.17.247.jar \
+    && mv bundle-2.17.247.jar /opt/spark/jars \
 # Download URL connection client required for S3FileIO
-  && curl https://repo1.maven.org/maven2/software/amazon/awssdk/url-connection-client/2.17.165/url-connection-client-2.17.165.jar -Lo url-connection-client-2.17.165.jar \
-     && mv url-connection-client-2.17.165.jar /opt/spark/jars \
+  && curl https://repo1.maven.org/maven2/software/amazon/awssdk/url-connection-client/2.17.247/url-connection-client-2.17.247.jar -Lo url-connection-client-2.17.247.jar \
+     && mv url-connection-client-2.17.247.jar /opt/spark/jars \
 # Download AWS Java SDK for S3FileIO
-  && curl https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk/1.12.222/aws-java-sdk-1.12.222.jar -Lo aws-java-sdk-1.12.222.jar \
-     && mv aws-java-sdk-1.12.222.jar /opt/spark/jars \
+  && curl https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk/1.12.276/aws-java-sdk-1.12.276.jar -Lo aws-java-sdk-1.12.276.jar \
+     && mv aws-java-sdk-1.12.276.jar /opt/spark/jars \
 # Download AWS Hadoop distrotion and install it
-  && curl https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.2.1/hadoop-aws-3.2.1.jar -Lo hadoop-aws-3.2.1.jar \
-    && mv hadoop-aws-3.2.1.jar /opt/spark/jars \
+  && curl https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.4/hadoop-aws-3.3.4.jar -Lo hadoop-aws-3.3.4.jar \
+    && mv hadoop-aws-3.3.4.jar /opt/spark/jars \
 # Download Jets3t for S3FileIO
   && curl https://repo1.maven.org/maven2/net/java/dev/jets3t/jets3t/0.9.4/jets3t-0.9.4.jar -Lo jets3t-0.9.4.jar \
     && mv jets3t-0.9.4.jar /opt/spark/jars \
 # Download AWS S3 File IO
-  && curl https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-s3/1.12.222/aws-java-sdk-s3-1.12.222.jar -Lo aws-java-sdk-s3-1.12.222.jar \
-    && mv aws-java-sdk-s3-1.12.222.jar /opt/spark/jars \
+  && curl https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-s3/1.12.276/aws-java-sdk-s3-1.12.276.jar -Lo aws-java-sdk-s3-1.12.276.jar \
+    && mv aws-java-sdk-s3-1.12.276.jar /opt/spark/jars \
 # Download AWS SDK for S3FileIO
-  && curl https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-core/1.12.222/aws-java-sdk-core-1.12.222.jar -Lo aws-java-sdk-core-1.12.222.jar \
-    && mv aws-java-sdk-core-1.12.222.jar /opt/spark/jars \
+  && curl https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-core/1.12.276/aws-java-sdk-core-1.12.276.jar -Lo aws-java-sdk-core-1.12.276.jar \
+    && mv aws-java-sdk-core-1.12.276.jar /opt/spark/jars \
 # Download AWS DynamoDB SDK for S3FileIO
-  && curl https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-dynamodb/1.12.222/aws-java-sdk-dynamodb-1.12.222.jar -Lo aws-java-sdk-dynamodb-1.12.222.jar \
-    && mv aws-java-sdk-dynamodb-1.12.222.jar /opt/spark/jars \
+  && curl https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-dynamodb/1.12.276/aws-java-sdk-dynamodb-1.12.276.jar -Lo aws-java-sdk-dynamodb-1.12.276.jar \
+    && mv aws-java-sdk-dynamodb-1.12.276.jar /opt/spark/jars \
 # Download and install haddop for metastore 
   && curl https://archive.apache.org/dist/hadoop/common/hadoop-${METASTORE_HADOOP_VERSION}/hadoop-${METASTORE_HADOOP_VERSION}.tar.gz -Lo hadoop.tgz \
     && tar xvzf hadoop.tgz --directory ${HADOOP_HOME} --strip-components 1 \
