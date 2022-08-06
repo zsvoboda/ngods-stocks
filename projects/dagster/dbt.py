@@ -9,33 +9,33 @@ def _dbt_run(context):
     if 'select' in context.op_config:
         s = context.op_config['select']        
         context.log.info(f"elt: executing dbt run with select: '{s}'")
-        context.resources.dbt.run(project_dir=pdir, select=s)
+        context.resources.dbt.cli("run", project_dir=pdir, select=s)
     else:
-        context.resources.dbt.run(project_dir=pdir)
+        context.resources.dbt.cli("run", project_dir=pdir)
 
 def _dbt_test(context):
     pdir = context.op_config['project_dir']
-    context.log.info(f"elt: executing dbt run with project_dir: '{pdir}'")
+    context.log.info(f"elt: executing dbt test with project_dir: '{pdir}'")
     if 'select' in context.op_config:
         s = context.op_config['select']        
         context.log.info(f"elt: executing dbt run with select: '{s}'")
-        context.resources.dbt.test(project_dir=pdir, select=s)
+        context.resources.dbt.cli("test", project_dir=pdir, select=s)
     else:
-        context.resources.dbt.test(project_dir=pdir)
+        context.resources.dbt.cli("test", project_dir=pdir)
 
 def _dbt_generate_docs(context):
     pdir = context.op_config['project_dir']
-    context.log.info(f"elt: executing dbt run with project_dir: '{pdir}'")
+    context.log.info(f"elt: executing dbt docs generate with project_dir: '{pdir}'")
     if 'select' in context.op_config:
         s = context.op_config['select']        
         context.log.info(f"elt: executing dbt run with select: '{s}'")
-        context.resources.dbt.generate_docs(project_dir=pdir, select=s)
+        context.resources.dbt.cli("docs generate", project_dir=pdir, select=s)
     else:
-        context.resources.dbt.generate_docs(project_dir=pdir)
+        context.resources.dbt.cli("docs generate", project_dir=pdir)
 
 def _dbt_source_freshness(context):
     pdir = context.op_config['project_dir']
-    context.log.info(f"elt: executing dbt run with project_dir: '{pdir}'")
+    context.log.info(f"elt: executing dbt source freshness with project_dir: '{pdir}'")
     if 'select' in context.op_config:
         s = context.op_config['select']        
         context.log.info(f"elt: executing dbt run with select: '{s}'")
@@ -69,9 +69,6 @@ def dbt_silver_test_doc_sources_op(context, dependent_job=None):
 @op(required_resource_keys={'dbt'})
 def dbt_gold_run_op(context, dependent_job=None):
     _dbt_run(context)
-    _dbt_test(context)
-    _dbt_generate_docs(context)
-    _dbt_source_freshness(context)
 
 @op(required_resource_keys={'dbt'})
 def dbt_gold_test_doc_sources_op(context, dependent_job=None):
