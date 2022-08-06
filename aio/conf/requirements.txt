@@ -1,11 +1,11 @@
 jupyter==1.0.0
-pandas==1.4.2
-prettytable==3.2.0
+pandas==1.4.3
+prettytable==3.3.0
 dbt-core==1.0.0 
 dbt-spark[PyHive]==1.0.0 
 dbt-trino==1.0.0 
 dbt-postgres==1.0.0
-pyspark==3.2.1
+pyspark==3.3.0
 dagit 
 dagster 
 dagster-gcp 
