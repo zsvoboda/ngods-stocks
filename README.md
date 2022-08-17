@@ -78,7 +78,7 @@ You can create your own data visualizations and dashboards. See the [Metabase do
 
 8. Download [DBeaver](https://dbeaver.io/download/) SQL tool.
 
-9. Connect to the Postgres database that contains the `gold` stage data. Use `jdbc:postgresql://localhost:5432/postgres` JDBC URL with username `postgres` and password `postgres`.
+9. Connect to the Postgres database that contains the `gold` stage data. Use `jdbc:postgresql://localhost:5432/ngods` JDBC URL with username `ngods` and password `ngods`.
 
 ![Postgres JDBC connection](./img/demo/postgres.jdbc.connection.png)
 
