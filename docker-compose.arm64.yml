@@ -124,6 +124,11 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
 
 
   mariadb:

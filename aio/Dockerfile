@@ -59,12 +59,12 @@ RUN curl https://github.com/SpencerPark/IJava/releases/download/v1.3.0/ijava-1.3
   && python3 install.py --sys-prefix \
   && rm -rf ijava-1.3.0.zip	install.py java \
 # Download spark distribution and install it
-  && curl https://archive.apache.org/dist/spark/spark-3.3.0/spark-3.3.0-bin-hadoop3.tgz -o spark-3.3.0-bin-hadoop3.tgz \
-    && tar xvzf spark-3.3.0-bin-hadoop3.tgz --directory /opt/spark --strip-components 1 \
-    && rm spark-3.3.0-bin-hadoop3.tgz \
+  && curl https://archive.apache.org/dist/spark/spark-3.3.1/spark-3.3.1-bin-hadoop3.tgz -o spark-3.3.1-bin-hadoop3.tgz \
+    && tar xvzf spark-3.3.1-bin-hadoop3.tgz --directory /opt/spark --strip-components 1 \
+    && rm spark-3.3.1-bin-hadoop3.tgz \
 # Download iceberg spark runtime
-  && curl https://search.maven.org/remotecontent?filepath=org/apache/iceberg/iceberg-spark-runtime-3.3_2.12/0.14.0/iceberg-spark-runtime-3.3_2.12-0.14.0.jar -Lo iceberg-spark-runtime-3.3_2.12-0.14.0.jar \
-    && mv iceberg-spark-runtime-3.3_2.12-0.14.0.jar /opt/spark/jars \
+  && curl https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-spark-runtime-3.3_2.12/1.0.0/iceberg-spark-runtime-3.3_2.12-1.0.0.jar -Lo iceberg-spark-runtime-3.3_2.12-1.0.0.jar \
+    && mv iceberg-spark-runtime-3.3_2.12-1.0.0.jar /opt/spark/jars \
 # Download Java AWS SDK
   && curl https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/2.17.247/bundle-2.17.247.jar -Lo bundle-2.17.247.jar \
     && mv bundle-2.17.247.jar /opt/spark/jars \
@@ -86,7 +86,7 @@ RUN curl https://github.com/SpencerPark/IJava/releases/download/v1.3.0/ijava-1.3
     && tar xvzf hive.tgz --directory ${HIVE_HOME} --strip-components 1 \
     && rm hive.tgz \
 # Download and install Kyuubi JDBC
-  && curl https://dlcdn.apache.org/incubator/kyuubi/kyuubi-1.5.2-incubating/apache-kyuubi-1.5.2-incubating-bin.tgz -Lo kyuubi.tgz \ 
+  && curl https://dlcdn.apache.org/incubator/kyuubi/kyuubi-1.6.0-incubating/apache-kyuubi-1.6.0-incubating-bin.tgz -Lo kyuubi.tgz \ 
     && tar xvzf kyuubi.tgz --directory ${KYUUBI_HOME} --strip-components 1 \
     && rm kyuubi.tgz \
 # Download and install Postgres deiver for Hive metastore
