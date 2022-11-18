@@ -86,7 +86,7 @@ RUN curl https://github.com/SpencerPark/IJava/releases/download/v1.3.0/ijava-1.3
     && tar xvzf hive.tgz --directory ${HIVE_HOME} --strip-components 1 \
     && rm hive.tgz \
 # Download and install Kyuubi JDBC
-  && curl https://dlcdn.apache.org/incubator/kyuubi/kyuubi-1.6.0-incubating/apache-kyuubi-1.6.0-incubating-bin.tgz -Lo kyuubi.tgz \ 
+  && curl https://dlcdn.apache.org/incubator/kyuubi/kyuubi-1.6.1-incubating/apache-kyuubi-1.6.1-incubating-bin.tgz -Lo kyuubi.tgz \ 
     && tar xvzf kyuubi.tgz --directory ${KYUUBI_HOME} --strip-components 1 \
     && rm kyuubi.tgz \
 # Download and install Postgres deiver for Hive metastore
