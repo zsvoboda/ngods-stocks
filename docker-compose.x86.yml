@@ -51,11 +51,8 @@ services:
       - POSTGRES_PASSWORD=ngods
       - POSTGRES_USER=ngods
       - POSTGRES_DB=ngods
-      - PGDATA=/var/lib/postgresql/data/pgdata
     ports:
       - '5432:5432'
-    volumes:
-      - ./data/postgres:/var/lib/postgresql/data/pgdata
     networks:
       - ndsnet
     healthcheck:
