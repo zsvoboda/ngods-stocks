@@ -186,3 +186,5 @@ Analytical (semantic) model is defined in [cube.dev](https://cube.dev/) and is u
 
 # Support
 Create a [github issue](https://github.com/zsvoboda/ngods-stocks/issues) if you have any questions.
+
+LETSS GOOOO!!!
