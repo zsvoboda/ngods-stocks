@@ -72,7 +72,7 @@ See the [cube.dev documentation](https://cube.dev/docs/) for more information.
 
 You can create your own data visualizations and dashboards. See the [Metabase documentation](https://metabase.com/docs/latest) for more information.
 
-7. Predict stock close price. Run the [ARIMA time-series prediction model](http://localhost:8888/notebooks/notebooks/arima.ipynb) notebook that is trained on 29 months of the `Apple:AAPL` stock data and predicts the next month.
+7. Predict stock close price. Run the [ARIMA time-series prediction model](http://localhost:8888/notebooks/arima.ipynb) notebook that is trained on 29 months of the `Apple:AAPL` stock data and predicts the next month.
 
 ![Jupyter ARIMA](./img/jupyter.arima.png)
 
