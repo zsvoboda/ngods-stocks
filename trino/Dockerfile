@@ -27,9 +27,9 @@ COPY conf/requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt \
     && rm requirements.txt
 
-RUN curl https://repo1.maven.org/maven2/io/trino/trino-server/402/trino-server-402.tar.gz -Lo trino-server-402.tar.gz \
-    && tar xvzf trino-server-402.tar.gz --directory ${TRINO_HOME} --strip-components 1 \
-    && rm trino-server-402.tar.gz 
+RUN curl https://repo1.maven.org/maven2/io/trino/trino-server/406/trino-server-406.tar.gz -Lo trino-server-406.tar.gz \
+    && tar xvzf trino-server-406.tar.gz --directory ${TRINO_HOME} --strip-components 1 \
+    && rm trino-server-406.tar.gz 
 
 WORKDIR ${TRINO_HOME}
 

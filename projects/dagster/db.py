@@ -33,6 +33,8 @@ def create_schemas_op(context, dependent_job=None):
     trino = context.resources.trino
     with trino.get_connection() as conn:
         cursor = conn.cursor()
+        cursor.execute("create schema if not exists warehouse.default with (location = 's3a://warehouse/default')")
+        cursor.fetchall()
         cursor.execute("create schema if not exists warehouse.bronze with (location = 's3a://warehouse/bronze')")
         cursor.fetchall()
         cursor.execute("create schema if not exists warehouse.silver with (location = 's3a://warehouse/silver')")
