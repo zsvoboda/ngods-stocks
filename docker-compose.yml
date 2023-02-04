@@ -83,14 +83,12 @@ services:
       - '10009:10009' # Kyuubi JDBC port
       - '18080:18080' # Spark history web ui port
       - '3070:3070' # Dagster web ui port
-      - '9083:9083' # Metastore thrift
     networks:
       ndsnet:
         aliases:
           - spark
           - dagster
           - dbt
-          - metastore
           - aio
     command: 
       - notebook
