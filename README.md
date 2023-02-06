@@ -6,8 +6,15 @@ This repository contains a stock market analysis demo of the ngods data stack. T
 3. Transform the data (e.g. normalize stock prices) using [dbt](https://www.getdbt.com/).
 4. Expose analytics data model using [cube.dev](https://cube.dev/).
 5. Visualize data as reports and dashboards using [Metabase](https://www.metabase.com/).
+6. Predicts stock prices using ARIMA in Apache Spark.
 
 The demo is packaged as [docker-compose](https://github.com/docker/compose) script that downloads, installs, and runs all components of the data stack.
+
+## UPDATES
+- 2023-02-03: 
+    - Upgrade to Apache Iceberg 1.1.0
+    - Upgrade to Trino 406
+    - Migrated to the new JDBC catalog (removed the heavyweigt Hive Metastore)
 
 # ngods
 ngods stands for New Generation Opensource Data Stack. It includes the following components: 
